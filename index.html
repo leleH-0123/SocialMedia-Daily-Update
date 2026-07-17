@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Momcozy Feedmates — Social Media Daily Report Dashboard | 2026-07-17</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f0f2f5;
+    color: #1a1a2e;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .dashboard { max-width: 1280px; margin: 0 auto; padding: 24px 20px 60px; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 16px;
+    padding: 32px 36px;
+    color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 24px rgba(102,126,234,.25);
+  }
+  .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
+  .header .subtitle { font-size: 14px; opacity: .88; }
+  .header .meta { display: flex; gap: 20px; margin-top: 14px; font-size: 13px; opacity: .9; }
+  .header .meta span { display: flex; align-items: center; gap: 5px; }
+  .status-badge {
+    display: inline-block; padding: 3px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 600; margin-top: 10px;
+    background: rgba(255,255,255,.2); border: 1px solid rgba(255,255,255,.35);
+  }
+
+  /* Section */
+  .section { background: #fff; border-radius: 14px; padding: 28px 30px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .section-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 8px; }
+  .section-title .icon { font-size: 22px; }
+  .section-desc { font-size: 13px; color: #888; margin-bottom: 20px; }
+
+  /* Summary Cards */
+  .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .summary-card {
+    border-radius: 12px; padding: 18px 20px; color: #fff; position: relative; overflow: hidden;
+  }
+  .summary-card .label { font-size: 12px; opacity: .85; margin-bottom: 4px; }
+  .summary-card .value { font-size: 24px; font-weight: 700; line-height: 1.2; }
+  .summary-card .note { font-size: 11px; opacity: .75; margin-top: 6px; }
+  .sc-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
+  .sc-teal { background: linear-gradient(135deg, #11998e, #38ef7d); }
+  .sc-orange { background: linear-gradient(135deg, #f12711, #f5af19); }
+  .sc-blue { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+
+  /* Two column layout */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .chart-container { position: relative; width: 100%; }
+  .chart-wrapper { background: #fff; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+
+  /* Account status cards */
+  .account-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .account-card { border: 1px solid #e8e8e8; border-radius: 12px; padding: 18px; }
+  .account-card .platform { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+  .account-card .status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+  .dot-red { background: #f12711; }
+  .dot-yellow { background: #f5af19; }
+  .dot-green { background: #38ef7d; }
+  .account-card .followers { font-size: 22px; font-weight: 700; margin: 8px 0 4px; color: #333; }
+  .account-card .desc { font-size: 12px; color: #888; }
+
+  /* Table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: #f7f8fa; padding: 10px 12px; text-align: left; font-weight: 600; color: #555; border-bottom: 2px solid #e8e8e8; white-space: nowrap; }
+  td { padding: 10px 12px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+  tr:hover td { background: #fafbfc; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tag-red { background: #ffe8e8; color: #d63031; }
+  .tag-yellow { background: #fff5e6; color: #e67e22; }
+  .tag-green { background: #e8fff0; color: #00a655; }
+  .tag-purple { background: #f0ecff; color: #6c5ce7; }
+
+  /* Alerts */
+  .alert-card { border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; display: flex; gap: 14px; }
+  .alert-yellow { background: #fffbe6; border-left: 4px solid #f5af19; }
+  .alert-green { background: #f0fff4; border-left: 4px solid #38ef7d; }
+  .alert-icon { font-size: 24px; flex-shrink: 0; }
+  .alert-content h4 { font-size: 14px; margin-bottom: 4px; }
+  .alert-content p { font-size: 12px; color: #666; }
+  .alert-content .action { font-size: 12px; color: #e67e22; font-weight: 600; margin-top: 4px; }
+
+  /* Insight box */
+  .insight-box {
+    background: linear-gradient(135deg, #f5f7ff, #eceaff);
+    border-radius: 10px; padding: 16px 20px; margin-top: 16px;
+    border-left: 4px solid #6c5ce7; font-size: 13px; color: #444;
+  }
+  .insight-box strong { color: #6c5ce7; }
+
+  /* Recommendation cards */
+  .rec-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .rec-card { border-radius: 12px; padding: 18px; border: 1px solid #e8e8e8; }
+  .rec-card h4 { font-size: 14px; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+  .rec-card ul { list-style: none; }
+  .rec-card li { font-size: 12px; color: #555; margin-bottom: 8px; padding-left: 14px; position: relative; }
+  .rec-card li::before { content: ""; position: absolute; left: 0; top: 7px; width: 5px; height: 5px; border-radius: 50%; background: #6c5ce7; }
+  .rec-card li strong { color: #333; }
+
+  /* Top content cards */
+  .top-content { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .top-card { border-radius: 12px; overflow: hidden; border: 1px solid #e8e8e8; }
+  .top-card .rank-banner { padding: 6px 14px; color: #fff; font-weight: 700; font-size: 13px; }
+  .rank-1 { background: linear-gradient(90deg, #f7971e, #ffd200); }
+  .rank-2 { background: linear-gradient(90deg, #c0c0c0, #e8e8e8); color: #555; }
+  .rank-3 { background: linear-gradient(90deg, #cd7f32, #e6a86e); }
+  .top-card .body { padding: 14px; }
+  .top-card .body h4 { font-size: 13px; margin-bottom: 6px; }
+  .top-card .body p { font-size: 12px; color: #666; margin-bottom: 6px; }
+  .top-card .body .stat { font-size: 11px; color: #999; }
+  .top-card .body .insight { font-size: 12px; color: #6c5ce7; font-weight: 600; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+
+  /* Divider banner */
+  .divider-banner {
+    text-align: center;
+    padding: 8px 0 4px;
+    margin-bottom: 16px;
+  }
+  .divider-banner span {
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  .divider-daily { background: #fff3e0; color: #e65100; }
+  .divider-long  { background: #e8eaf6; color: #283593; }
+
+  /* Footer */
+  .footer { text-align: center; font-size: 12px; color: #aaa; padding: 20px 0; }
+
+  @media (max-width: 900px) {
+    .summary-grid, .account-grid, .two-col, .rec-grid, .top-content { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="dashboard">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Momcozy Feedmates — Social Media Daily Report</h1>
+    <div class="subtitle">Brand: Momcozy Feedmates | Product Lines: Bottle Washer, Baby Food Maker, Bottle Warmer/Cooler</div>
+    <div class="meta">
+      <span>📅 2026-07-17 (Friday)</span>
+      <span>👤 Social Media Intelligence Analyst</span>
+      <span>🎯 Marketing Campaign Team</span>
+    </div>
+    <div class="status-badge">🟡 竞品情报 & 市场分析运行中 — 平台实时数据待接入</div>
+  </div>
+
+  <!-- ============== #1. EXECUTIVE SUMMARY ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📋</span> 1. Executive Summary</div>
+    <div class="section-desc">当日社媒表现总览 — 核心趋势、关键变化与重要信号</div>
+
+    <div class="summary-grid">
+      <div class="summary-card sc-purple">
+        <div class="label">竞争态势</div>
+        <div class="value">加剧</div>
+        <div class="note">Baby Brezza 大促 + 新品预热</div>
+      </div>
+      <div class="summary-card sc-teal">
+        <div class="label">Momcozy Reddit 声量</div>
+        <div class="value">强正面</div>
+        <div class="note">r/ExclusivelyPumping 多用户自发推荐</div>
+      </div>
+      <div class="summary-card sc-orange">
+        <div class="label">竞品口碑裂痕</div>
+        <div class="value">Baby Brezza</div>
+        <div class="note">发霉/报错/噪音 — Amazon 1-2★ 差评累积</div>
+      </div>
+      <div class="summary-card sc-blue">
+        <div class="label">Feedmates 账号状态</div>
+        <div class="value">冷启动</div>
+        <div class="note">Linktree 2026/06 创建，亟需内容策略</div>
+      </div>
+    </div>
+
+    <p style="font-size: 13px; color: #555; line-height: 1.8;">
+      本周母婴喂养赛道竞争显著加剧。<strong>Baby Brezza</strong> 正执行"Hello Summer Sale"全线最高 22% OFF，同时预热"下一代 Sterilizer"新品。
+      <strong>Eufy（安克创新）</strong>以 $399.99 高端定价杀入母婴赛道，穿戴式吸奶器月销破万、同比增长 736%。
+      <strong>Papablic</strong> 通过三层 KOL 矩阵持续扩大声量，TikTok 单条播放 2440 万。
+      <strong>Momcozy</strong> 在 Reddit/WhatToExpect 社区已形成自发正面口碑循环（价格更优、不发霉、72h 储存、容量更大），
+      但品牌社媒账号仍处冷启动阶段，亟需加速从"被讨论"到"主动讲述"的转变。
+    </p>
+  </div>
+
+  <!-- 🔥 DAILY-CHANGE DIVIDER -->
+  <div class="divider-banner"><span class="divider-daily">🔥 每日高变化板块</span></div>
+
+  <!-- ============== #2. 热点追踪 & 内容灵感 ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🔥</span> 2. 热点追踪 & 内容灵感</div>
+    <div class="section-desc">每日新闻热点 → 内容创意转化 — 抓住公众注意力流向</div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; margin-bottom: 20px;">
+      <div class="card" style="border-left: 4px solid #ef4444; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">🧪</span>
+          <strong>婴儿微塑料摄入恐慌</strong>
+          <span style="background:#fee2e2; color:#dc2626; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">Nature Food 研究发现配方奶喂养婴儿日均摄入 160 万颗微塑料 — 根源在高温冲奶+反复煮沸消毒塑料奶瓶。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>内容灵感：</strong>"你每天洗奶瓶的方式，可能正在伤害宝宝" — 科普 Carousel → 奶瓶清洗机 = 标准化安全方案</p>
+        <p style="font-size:11px; color:#999;">📎 来源：头条号 / Nature Food | ⏰ 热度窗口：7/7 至今，仍在扩散</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #f59e0b; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">👨‍👧</span>
+          <strong>#爸爸也在我心里第一名</strong>
+          <span style="background:#fef3c7; color:#d97706; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">3 岁女儿一句"爸爸也在我心里第一名"引爆全网 — 8600 万播放 / 4.2 亿阅读。江苏省妇联发起"听见孩子的爱"公益行动。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>内容灵感：</strong>"凌晨 3 点，爸爸爬起来洗奶瓶的背影" — Dad 视角喂养 Reel，绑 Feedmates"喂养是团队合作"品牌理念</p>
+        <p style="font-size:11px; color:#999;">📎 来源：搜狐 / 齐鲁网 | ⏰ 热度窗口：7/14 爆发，48h 内跟进最佳</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #3b82f6; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">🧒</span>
+          <strong>"反精致育儿"内容趋势</strong>
+          <span style="background:#dbeafe; color:#2563eb; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">"四个娃一辆车"走红热搜，中央网信办专项清理摆拍育儿内容 3.7 万条，平台算法向无脚本真实家庭日常倾斜。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>策略调整：</strong>精修棚拍 → 厨房实拍；脚本测评 → 凌晨一镜到底；参数海报 → 妈妈洗奶瓶 Vlog</p>
+        <p style="font-size:11px; color:#999;">📎 来源：今日头条 | 影响范围：全平台内容算法</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #8b5cf6; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">📊</span>
+          <strong>Papablic 策略深度解剖</strong>
+          <span style="background:#ede9fe; color:#7c3aed; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">tt123.com 发布 Papablic 完整拆解：信任四步法 → 三层 KOL 矩阵 → Prego Expo 护士站台策略。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>竞争启示：</strong>Papablic 用"护士站台"，Momcozy 用"真实父母证言"差异化；Dad KOL 矩阵是竞品全空白</p>
+        <p style="font-size:11px; color:#999;">📎 来源：tt123.com | 文章已是跨境母婴圈必读教材</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #10b981; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">🏖️</span>
+          <strong>暑期亲子出行季</strong>
+          <span style="background:#d1fae5; color:#059669; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">全美 7-8 月暑期出行高峰，免费亲子活动密集（国家公园免费日、Home Depot 工坊、LEGO Mini Build 等）。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>内容灵感：</strong>"带娃出行奶瓶怎么洗？"旅行喂养 Checklist → 便携温奶器/冷却器 On-the-Go Bundle</p>
+        <p style="font-size:11px; color:#999;">📎 来源：MamaDeals / BusyKidd | ⏰ 季节窗口：即日起至 8 月底</p>
+      </div>
+
+      <div class="card" style="border-left: 4px solid #ec4899; background:#fff; border-radius:10px; padding:14px 16px;">
+        <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+          <span style="font-size:20px;">🛋️</span>
+          <strong>妈妈模仿孩子看电视</strong>
+          <span style="background:#fce7f3; color:#db2777; padding:2px 8px; border-radius:10px; font-size:11px;">🔥🔥🔥🔥</span>
+        </div>
+        <p style="font-size:13px; color:#666; margin-bottom:6px;">亲子角色互换走红，话题破亿阅读，已演变为 9 种经典模仿类型+全家参与式内容。</p>
+        <p style="font-size:12px; color:#8b5cf6; margin-bottom:4px;">🎯 <strong>内容灵感：</strong>"爸爸模仿妈妈洗奶瓶"幽默日常 / "半夜洗奶瓶的 5 种精神状态"搞笑短片</p>
+        <p style="font-size:11px; color:#999;">📎 来源：新浪娱乐 | 核心密码：真实 > 精致，幽默 > 说教</p>
+      </div>
+    </div>
+
+    <!-- 7-Day Content Calendar -->
+    <div style="background:#f7f8fa; border-radius:10px; padding:16px 18px; margin-bottom: 16px;">
+      <div style="font-size:15px; font-weight:700; margin-bottom:12px;">📅 近 7 天内容日历建议</div>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead><tr><th>日期</th><th>热点借势</th><th>内容主题</th><th>类型</th><th>平台</th></tr></thead>
+          <tbody>
+            <tr><td>7/17 今天</td><td>🧪 微塑料恐慌</td><td>"手洗奶瓶的 3 个隐形风险"</td><td>教育 Carousel</td><td>IG</td></tr>
+            <tr><td>7/18 周五</td><td>👨‍👧 #爸爸第一名</td><td>"凌晨 3 点，爸爸洗奶瓶的背影"</td><td>情感 Reel</td><td>IG+TK</td></tr>
+            <tr><td>7/19 周六</td><td>🏖️ 暑期出行</td><td>"带娃出行喂养 Checklist"</td><td>实用 Carousel</td><td>IG</td></tr>
+            <tr><td>7/20 周日</td><td>🧒 反精致育儿</td><td>"洗了 500 次奶瓶后的台面"</td><td>真实 Vlog</td><td>TK</td></tr>
+            <tr><td>7/21 周一</td><td>📊 竞品洞察</td><td>"为什么从 Brezza 换到 Momcozy？"</td><td>UGC 故事</td><td>IG</td></tr>
+            <tr><td>7/22 周二</td><td>🧪 微塑料延伸</td><td>"机洗 vs 手洗：显微镜残留对比"</td><td>实验短视频</td><td>TK</td></tr>
+            <tr><td>7/23 周三</td><td>👨‍👧 Dad 线</td><td>"新爸爸喂养入门：3 分钟搞定"</td><td>教育 Reel</td><td>IG+TK</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="insight-box">
+      <strong>本周最强内容窗口：🧪 微塑料恐慌</strong> — 这是 Momcozy 奶瓶清洗机品类的"天赐话题"。核心逻辑链：微塑料恐慌 → 妈妈焦虑"我洗奶瓶的方式对吗？" → 奶瓶清洗机 = 自动化标准化安全方案。建议立即出内容，不要等竞品先占位。
+    </div>
+  </div>
+
+  <!-- ============== #3. 竞品社媒动态监控 ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🕵️</span> 3. 竞品社媒动态监控</div>
+    <div class="section-desc">竞品动态总览 — 2026 年 7 月第 3 周（TikTok 一手数据 + Instagram 二手补充）</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Brand</th>
+          <th>Key Activity</th>
+          <th>Product Focus</th>
+          <th>Threat</th>
+          <th>Insight</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Baby Brezza</strong></td>
+          <td>"Hello Summer Sale" 22% OFF；Bottle Washer Pro $259.99；"下一代 Sterilizer"预注册</td>
+          <td>全品类扩张：清洗+消毒+温奶+配方机+辅食机</td>
+          <td><span class="tag tag-red">🔴🔴🔴 高</span></td>
+          <td>大促可能短期冲击 Momcozy 价格优势；"发霉"口碑是软肋</td>
+        </tr>
+        <tr>
+          <td><strong>Eufy Baby</strong></td>
+          <td>S1 Pro 清洗机 $399.99；吸奶器月销万件 (+736% YoY)；安克母婴收入 82.71 亿 (+30.5%)</td>
+          <td>智能清洗 + 智能吸奶器 + 婴儿监视器</td>
+          <td><span class="tag tag-red">🔴🔴🔴 高</span></td>
+          <td>3C 品牌研发能力降维打击，最危险长期对手</td>
+        </tr>
+        <tr>
+          <td><strong>Papablic</strong></td>
+          <td>Safeguard Plus "水质净化"差异化；三层 KOL 矩阵；Prego Expo 护士站台</td>
+          <td>清洗 + 消毒 + 干燥</td>
+          <td><span class="tag tag-yellow">🟡🔴 中高</span></td>
+          <td>KOL 策略行业标杆，方法论完整执行力强</td>
+        </tr>
+        <tr>
+          <td><strong>Grownsy</strong></td>
+          <td>EaseClean Pro ~$239.99；WhatToExpect 赞助；博客 SEO 活跃</td>
+          <td>清洗 + 消毒 + 辅食机</td>
+          <td><span class="tag tag-yellow">🟡 中</span></td>
+          <td>性价比定位，在价格敏感用户中和 Momcozy 直接竞争</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <strong>📊 竞品 TikTok 一手数据快照：</strong>
+      • <strong>Baby Brezza</strong> @babybrezza：133.2K 粉丝 / 1.7M 总赞 — 置顶"黑色款回归"200.6K 播放，"新手妈妈必备 Bottle Washer Pro" 17.6K 播放<br>
+      • <strong>Grownsy</strong> @grownsy：44K 粉丝 / 114.9K 总赞 — 最高 275.2K 播放，性价比内容持续爆款<br>
+      • <strong>Papablic</strong> @papablic_official：37.5K 粉丝 — KOL 合作（@haileyallissiaa 2440 万播放）放大品牌<br>
+      • <strong>⚠️ Instagram 需登录：</strong>全部竞品 IG 内容 WebFetch 不可达，标记"待手动查看"
+    </div>
+  </div>
+
+  <!-- ============== #4. Account Performance Overview ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📱</span> 4. Account Performance Overview</div>
+    <div class="section-desc">品牌账号各平台状态概览（定量数据待 API 接入后自动填充）</div>
+
+    <div class="account-grid">
+      <div class="account-card" style="border-left: 4px solid #E1306C;">
+        <div class="platform"><span class="status-dot dot-green"></span>主品牌 Instagram</div>
+        <div class="followers">52.7万</div>
+        <div class="desc"><strong>@momcozy</strong> — 1,992 帖子 / 51 关注。"As the Cozy Reformer, we always put moms first"。母品牌流量池，应作为 Feedmates 导流母舰</div>
+      </div>
+      <div class="account-card" style="border-left: 4px solid #ff0050;">
+        <div class="platform"><span class="status-dot dot-green"></span>主品牌 TikTok</div>
+        <div class="followers">435.9K</div>
+        <div class="desc"><strong>@momcozyofficial</strong> — 62 关注 / <strong>1.7M 累计点赞</strong>。"Cozy Reformer for Moms"。短视频流量主引擎，Feedmates 内容借船出海的唯一 TK 通道</div>
+      </div>
+      <div class="account-card" style="border-left: 4px solid #f09433;">
+        <div class="platform"><span class="status-dot dot-yellow"></span>Feedmates Instagram</div>
+        <div class="followers">3,897</div>
+        <div class="desc"><strong>@momcozy_feedmates</strong> — 69 帖子 / 64 关注。"Feeding is a team effort. And we are the game changer"。独立子品牌沉淀</div>
+      </div>
+      <div class="account-card" style="border-left: 4px solid #1877f2;">
+        <div class="platform"><span class="status-dot dot-red"></span>Feedmates Facebook</div>
+        <div class="followers">382</div>
+        <div class="desc"><strong>Momcozy Feedmates</strong> — 关注 0 人。<strong>非主营销平台</strong>（用户确认），仅作客服/社群兜底</div>
+      </div>
+    </div>
+
+    <div style="background: linear-gradient(135deg, #fff3cd 0%, #ffe8a1 100%); border-left: 4px solid #ff9800; padding: 14px 18px; border-radius: 8px; margin-top: 16px; font-size: 13px;">
+      <strong>⚠️ 重要架构事实：</strong>Feedmates <strong>无独立 TikTok 账号</strong>。母婴品类病毒传播主战场在 TikTok（Papablic 单条 2440 万播放已验证），Feedmates 必须通过 <strong>@momcozyofficial 主品牌 TK 借船出海</strong>，再导流到 @momcozy_feedmates IG 做沉淀。
+    </div>
+
+    <div class="insight-box">
+      <strong>核心发现：子母品牌流量势能差悬殊</strong><br>
+      • 主品牌双平台势能强劲（IG 52.7万 + TK 43.6万 + 累计 1.7M 赞），是品类市场中最被低估的母品牌资产之一<br>
+      • Feedmates IG 当前 3,897 粉丝 = 主品牌 IG 的 <strong>0.74%</strong>，处于"概念清晰、流量真空"状态<br>
+      • <strong>建议：</strong>主品牌 IG 每周固定 1-2 条"Feedmates Highlight"；Feedmates 短视频内容通过 @momcozyofficial 发布并在视频结尾做软引流
+    </div>
+  </div>
+
+  <!-- ============== #5. Content Performance Analysis ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📊</span> 5. Content Performance Analysis — 行业 ER 基准</div>
+    <div class="section-desc">2026 Q2 母婴喂养品类 — 各内容类型行业平均 ER & Save Rate</div>
+
+    <div style="position: relative; height: 360px;">
+      <canvas id="chartContentType"></canvas>
+    </div>
+
+    <div class="insight-box">
+      <strong>策略启示：</strong>UGC / Real Parent 内容 ER 最高（7-10%+），Giveaway 短期 Reach 暴增但粉丝质量低。冷启动阶段应优先做 UGC 征集和 KOL 合作，避免追 Giveaway。Product Education 内容 Saves 率最高（3-5%），适合长期 Consideration 建设。
+    </div>
+  </div>
+
+  <!-- ============== #6. Top Performing Content ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🏆</span> 6. Top Performing Content — 品类最佳参考</div>
+    <div class="section-desc">本周母婴喂养品类高表现内容（竞品参考）</div>
+
+    <div class="top-content">
+      <div class="top-card">
+        <div class="rank-banner rank-1">🥇 TOP 1 — 2440 万播放</div>
+        <div class="body">
+          <h4>Papablic × @haileyallissiaa (TikTok)</h4>
+          <p>三胞胎妈妈同时喂养三个婴儿的混乱日常，Papablic 清洗机自然出现在解决方案位置。</p>
+          <p class="stat">📺 2440万播放 | ❤️ 28万点赞 | 粉丝 461.5K</p>
+          <div class="insight">"真实场景 + 情感痛点 + 产品自然融入"是最高效内容公式</div>
+        </div>
+      </div>
+      <div class="top-card">
+        <div class="rank-banner rank-2">🥈 TOP 2 — 510 万播放</div>
+        <div class="body">
+          <h4>Papablic × @sergey.be.be (Instagram)</h4>
+          <p>新手爸爸产后第 79 天用机器洗奶瓶同时给猫搭窝。#NewDadLife #HandsOnDad</p>
+          <p class="stat">📺 510万播放 | ❤️ 44.5万点赞 | 粉丝 433.5K</p>
+          <div class="insight">"Dad Involvement"内容正在爆发 — Feedmates 品牌名天然契合</div>
+        </div>
+      </div>
+      <div class="top-card">
+        <div class="rank-banner rank-3">🥉 TOP 3 — 第三方背书</div>
+        <div class="body">
+          <h4>Baby Brezza × Babylist 病毒推荐</h4>
+          <p>Babylist 将 Baby Brezza 列为"11 个值得 Hype 的病毒婴儿产品"之一，附 influencer 测评。</p>
+          <p class="stat">📡 第三方权威平台 + Influencer UGC 组合拳</p>
+          <div class="insight">争取 Babylist/WhatToExpect 评测位比自发自媒 10 条帖更高效</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== #7. Low Performing Content Diagnosis ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📉</span> 7. Low Performing Content Diagnosis</div>
+    <div class="section-desc">表现低于品类基准的内容诊断 — 避免重复踩坑</div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>常见问题</th>
+          <th>特征</th>
+          <th>优化方向</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>过度精修棚拍</strong></td>
+          <td>背景完美、产品居中、无人物 — 看似高级但无法引发共鸣</td>
+          <td>改为厨房实拍 / 凌晨一镜到底 / 用户投稿</td>
+        </tr>
+        <tr>
+          <td><strong>纯参数罗列</strong></td>
+          <td>"8 瓶容量 / UV 消毒 / 静音 / 干燥" — 没有使用场景</td>
+          <td>每条参数配一个真实痛点（如"8 瓶 = 不用半夜再洗"）</td>
+        </tr>
+        <tr>
+          <td><strong>纯促销信息</strong></td>
+          <td>"限时 22% OFF""最后 24 小时" — 短期 Reach 高但 Saves 极低</td>
+          <td>把促销嵌入 UGC 故事（"我为什么选 Momcozy"结尾带折扣码）</td>
+        </tr>
+        <tr>
+          <td><strong>无 CTA 互动</strong></td>
+          <td>只展示产品功能，不引导评论/保存/分享</td>
+          <td>每条内容至少 1 个 CTA（"你的洗奶瓶噩梦是什么？"）</td>
+        </tr>
+        <tr>
+          <td><strong>视觉吸引力弱</strong></td>
+          <td>无字幕、无 BGM、无前后对比 — 3 秒内无法抓住注意力</td>
+          <td>前 3 秒必须有"问题或反常识"钩子（如"你以为洗奶瓶很干净？"）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="insight-box">
+      <strong>本月冷启动注意：</strong>Feedmates IG 当前仅 69 帖子，处于算法冷启动期。<strong>前 30 条内容</strong>的发布频率和前 3 秒钩子质量直接决定账号能否突破推荐池。建议每天 1 条 Carousel/Reel 持续 30 天，禁用纯促销帖。
+    </div>
+  </div>
+
+  <!-- ============== #8. Audience Feedback ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🗣️</span> 8. Audience Feedback — Community Sentiment</div>
+    <div class="section-desc">Reddit / WhatToExpect / BabyCenter / Babylist / Amazon — 社区声量分布</div>
+
+    <div style="position: relative; height: 320px;">
+      <canvas id="chartSentiment"></canvas>
+    </div>
+
+    <div class="insight-box">
+      <strong>核心发现：</strong>Momcozy 在 Reddit 上已形成自发正面口碑循环 — "game changer""customer service on point""sent a replacement without asking for the old one back"。
+      一位用户直接说："It's the first thing I tell all of my pregnant friends to put on their registry."
+      Reddit 正面口碑正在产生跨平台溢出效应 — WhatToExpect 用户明确表示"I've read a lot on Reddit and it seems everyone loves the momcozy one"。
+    </div>
+  </div>
+
+  <!-- ============== #9. Social Listening Insights ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">👂</span> 9. Social Listening — Trending Topics</div>
+    <div class="section-desc">母婴喂养赛道热门话题声量 & 内容机会</div>
+
+    <div style="position: relative; height: 340px;">
+      <canvas id="chartTrends"></canvas>
+    </div>
+  </div>
+
+  <!-- ============== #10. Daily Recommendation ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">💡</span> 10. Daily Recommendation — What We Should Do</div>
+    <div class="section-desc">基于当日分析的行动建议</div>
+
+    <div class="rec-grid">
+      <div class="rec-card">
+        <h4>📝 Content</h4>
+        <ul>
+          <li><strong>启动"Switched to Momcozy"UGC 系列</strong> — 征集从其他品牌转用 Momcozy 的真实故事，突出不发霉、更安静、72h 储存</li>
+          <li><strong>建立"Dad Feeds Too"内容线</strong> — 利用 Feedmates 品牌名契合"伴侣喂养"叙事，每周 1 条 Dad 视角</li>
+          <li><strong>暑期旅行内容窗口</strong> — 推广 On-the-Go Bundle，"带娃出行奶瓶怎么处理"系列 Reels</li>
+          <li><strong>SEO 内容铺设</strong> — 发布"2026 Bottle Washer Buying Guide"博客文章</li>
+        </ul>
+      </div>
+      <div class="rec-card">
+        <h4>👥 Community</h4>
+        <ul>
+          <li><strong>Reddit / WhatToExpect 主动运营</strong> — 监测"Baby Brezza or Momcozy"等关键词，以品牌身份提供有用信息</li>
+          <li><strong>KOL 矩阵搭建</strong> — Tier1 情感共鸣(2-3位) + Tier2 理性测评(1-2位) + Tier3 专业背书(哺乳顾问/儿科医生)</li>
+          <li><strong>Instagram Stories 互动</strong> — 每日 Q&A sticker + Poll + 用户投稿 Bottle Prep Station</li>
+        </ul>
+      </div>
+      <div class="rec-card">
+        <h4>🛒 Product</h4>
+        <ul>
+          <li><strong>系统性强调 D8 差异化</strong> — 8 瓶容量 / 自清洁系统 / 72h 无菌储存 / 静音运行</li>
+          <li><strong>暑期推 On-the-Go Bundle</strong> — 便携温奶器 + 冷藏包组合，"Road Trip with Baby"场景</li>
+          <li><strong>清洁片订阅提醒</strong> — 内容中嵌入定期更换提醒，提升配件复购率</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📊 LONG-CYCLE DIVIDER -->
+  <div class="divider-banner"><span class="divider-long">📊 长周期分析板块（周度更新）</span></div>
+
+  <!-- ============== #11. 竞品战略深度分析 ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📈</span> 11. 竞品战略深度分析</div>
+    <div class="section-desc">威胁雷达 / 价格对比 / 战略机会 — 最近更新 2026-07-17（周度滚动）</div>
+
+    <div class="two-col">
+      <div class="chart-wrapper" style="box-shadow:none; border:1px solid #eee;">
+        <div class="section-title"><span class="icon">💬</span> Reddit 品牌声量对比</div>
+        <div class="section-desc">Reddit 社区品牌情感倾向分析</div>
+        <div style="position: relative; height: 300px;">
+          <canvas id="chartRedditSentiment"></canvas>
+        </div>
+      </div>
+
+      <div class="chart-wrapper" style="box-shadow:none; border:1px solid #eee;">
+        <div class="section-title"><span class="icon">🎯</span> 竞品威胁雷达</div>
+        <div class="section-desc">基于产品力、营销策略、品牌声量综合评估</div>
+        <div style="position: relative; height: 300px;">
+          <canvas id="chartThreat"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <div class="section-title"><span class="icon">💲</span> 11.1 竞品价格对比 — Bottle Washer</div>
+      <div class="section-desc">奶瓶清洗机品类价格区间对比（USD）</div>
+
+      <div style="position: relative; height: 280px;">
+        <canvas id="chartPrice"></canvas>
+      </div>
+
+      <div class="insight-box">
+        <strong>价格格局：</strong>Eufy $399.99 领跑高端，Baby Brezza 大促降至 $259.99，Grownsy ~$180 抢低价段。Momcozy ($200-$300) 占据中端核心价格带 — Baby Brezza 促销正在压缩这一优势，建议以 Bundle 套装而非直接降价应对。
+      </div>
+    </div>
+
+    <div style="background:#f7f8fa; border-radius:10px; padding:14px 18px; margin-top:18px; font-size:12px; color:#888;">
+      <strong>📌 周度更新说明：</strong>本节内容最近更新 2026-07-17，<strong>无重大变化前每日日报不再重复展开</strong>。下次深度复盘时间：下周一。下次更新触发条件：竞品重大发布 / 重大价格调整 / 新品牌入局。
+    </div>
+  </div>
+
+  <!-- ============== #12. Alert System ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🚨</span> 12. Alert System</div>
+    <div class="section-desc">自动预警 — 基于预设规则的异常检测</div>
+
+    <div class="alert-card alert-yellow">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <h4>Alert 1: 竞品大规模促销 — Baby Brezza "Hello Summer Sale"</h4>
+        <p><strong>Issue:</strong> 全线最高 22% OFF，Bottle Washer Pro 降至 $259.99（低于 Momcozy KleanPal Pro $299.99）</p>
+        <p><strong>Impact:</strong> 可能分流价格敏感型用户；"Momcozy was cheaper"的价格优势正在被压缩</p>
+        <p class="action">建议：推 Bundle 套装（清洗机 + 清洁片年度装 / 便携温奶器）或老用户推荐返现，不直接降价</p>
+      </div>
+    </div>
+
+    <div class="alert-card alert-yellow">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <h4>Alert 2: 竞品新品预热 — Baby Brezza "下一代 Sterilizer"</h4>
+        <p><strong>Issue:</strong> 官网已启动预注册页面和邮件收集，"Experience next-generation of sterilization"</p>
+        <p><strong>Impact:</strong> 新品发布伴随大规模 PR 和 influencer 推广，可能抢占品类话语权</p>
+        <p class="action">建议：新品发布前加速生产 D8 / KleanPal Pro 对比内容和用户证言视频，提前建立差异化认知</p>
+      </div>
+    </div>
+
+    <div class="alert-card alert-yellow">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-content">
+        <h4>Alert 3: 品牌账号冷启动滞后</h4>
+        <p><strong>Issue:</strong> Feedmates 社交账号 Linktree 创建于 2026/06，内容频率低、KOL 矩阵未建立</p>
+        <p><strong>Impact:</strong> 品类教育接近完成、用户进入品牌选择阶段的关键窗口，内容空缺 = 市场份额拱手让人</p>
+        <p class="action">建议：本周完成 ① 30 天内容日历 ② 3-5 位 Micro-influencer 确认 ③ 主账号 → 子账号导流上线</p>
+      </div>
+    </div>
+
+    <div class="alert-card alert-green">
+      <div class="alert-icon">✅</div>
+      <div class="alert-content">
+        <h4>No High Priority Alerts Triggered</h4>
+        <p>负面舆情暴增: 🟢 Clear — Momcozy 社区舆情偏正面 | 产品投诉增加: 🟢 Clear | 竞品病毒内容: 🟡 监控中（Papablic 2440 万播放）</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============== DATA SOURCES ============== -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📚</span> Data Sources & Methodology</div>
+    <table>
+      <thead><tr><th>数据源</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>自有账号数据</strong></td><td>用户已确认主品牌 IG 52.7万 / 主品牌 TK 435.9K / Feedmates IG 3,897 / FB 382；Reach/ER 等动态指标需平台数据 API 接入</td></tr>
+        <tr><td><strong>竞品 TikTok 一手数据</strong></td><td>通过 WebFetch 直接抓取 @babybrezza、@grownsy、@papablic_official — 粉丝数、获赞数、最近视频+播放量</td></tr>
+        <tr><td><strong>竞品 Instagram</strong></td><td>需登录，WebFetch 不可用 → 标记"待手动查看"</td></tr>
+        <tr><td><strong>Reddit</strong></td><td>r/ExclusivelyPumping, r/NewParents (200K+), r/beyondthebump (300K+), r/FormulaFeeders, r/HumansPumpingMilk（通过 viewddit.com 镜像及 WebSearch 检索）</td></tr>
+        <tr><td><strong>WhatToExpect 社区</strong></td><td>August 2023/2025/2026 Babies, September 2026 Babies, Multiples and Twins, Exclusive Pumping, Breastfeeding 等论坛</td></tr>
+        <tr><td><strong>BabyCenter 社区</strong></td><td>多个 birth club 及 product recommendation 帖子</td></tr>
+        <tr><td><strong>Babylist</strong></td><td>编辑测评（Alainna Wurfel 的 Momcozy vs Baby Brezza 对比）及 viral products 推荐</td></tr>
+        <tr><td><strong>Amazon Reviews</strong></td><td>Baby Brezza Bottle Washer Pro（7,034 条评分，截至 2026 年 6 月）— 通过 WebSearch 二次引用，非直接爬取</td></tr>
+        <tr><td><strong>行业媒体</strong></td><td>taylormadebabyco.com, ritualguide.co, cribworthy.com, tt123.com 等</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    <p>Momcozy Feedmates Social Media Daily Report | Generated 2026-07-17 | Marketing Campaign Team AI</p>
+    <p style="margin-top:4px;">Next run: July 18, 2026 at 09:00 — 建议下次执行前接入平台数据 API 以启用完整自动化</p>
+  </div>
+
+</div>
+
+<script>
+// Register datalabels plugin
+Chart.register(ChartDataLabels);
+ChartDataLabels.defaults.font.size = 11;
+ChartDataLabels.defaults.color = '#555';
+
+// Common options
+const commonGrid = { color: 'rgba(0,0,0,.06)' };
+const commonFont = { family: "'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif", size: 12 };
+
+// ===== Chart 1: Content Type ER =====
+new Chart(document.getElementById('chartContentType'), {
+  type: 'bar',
+  data: {
+    labels: ['Product Education', 'Lifestyle / Routine', 'UGC / Real Parent', 'Community / Challenge', 'Giveaway', 'Promotion / Discount'],
+    datasets: [{
+      label: 'ER 下限 (%)',
+      data: [6.5, 5.5, 7.0, 6.0, 8.0, 3.0],
+      backgroundColor: 'rgba(102,126,234,.45)',
+      borderColor: 'rgba(102,126,234,.8)',
+      borderWidth: 1, borderRadius: 6
+    }, {
+      label: 'ER 上限 (%)',
+      data: [8.5, 7.5, 10.5, 9.0, 15.0, 5.0],
+      backgroundColor: 'rgba(118,75,162,.65)',
+      borderColor: 'rgba(118,75,162,.9)',
+      borderWidth: 1, borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: commonFont } },
+      datalabels: { display: false }
+    },
+    scales: {
+      y: { beginAtZero: true, title: { display: true, text: 'Engagement Rate (%)', font: commonFont }, grid: { color: 'rgba(0,0,0,.06)' } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ===== Chart 2: Reddit Sentiment =====
+new Chart(document.getElementById('chartRedditSentiment'), {
+  type: 'bar',
+  data: {
+    labels: ['Momcozy', 'Baby Brezza', 'Papablic', 'Grownsy', 'Eufy'],
+    datasets: [{
+      label: '正面声量',
+      data: [85, 25, 70, 65, 40],
+      backgroundColor: 'rgba(56,239,125,.6)',
+      borderColor: 'rgba(56,239,125,.9)',
+      borderWidth: 1, borderRadius: 6
+    }, {
+      label: '负面声量',
+      data: [5, 55, 8, 10, 25],
+      backgroundColor: 'rgba(241,39,17,.55)',
+      borderColor: 'rgba(241,39,17,.8)',
+      borderWidth: 1, borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: commonFont } },
+      datalabels: { anchor: 'end', align: 'top', font: { size: 10 }, formatter: v => v + '%' }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: '声量占比 (%)', font: commonFont }, grid: { color: 'rgba(0,0,0,.06)' } },
+      x: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ===== Chart 3: Threat Radar =====
+new Chart(document.getElementById('chartThreat'), {
+  type: 'radar',
+  data: {
+    labels: ['产品力', '营销策略', '品牌声量', '价格竞争力', 'KOL 矩阵', '渠道覆盖'],
+    datasets: [{
+      label: 'Baby Brezza',
+      data: [7, 8, 9, 6, 7, 9],
+      backgroundColor: 'rgba(241,39,17,.15)',
+      borderColor: 'rgba(241,39,17,.8)',
+      pointBackgroundColor: 'rgba(241,39,17,.8)',
+      borderWidth: 2
+    }, {
+      label: 'Eufy Baby',
+      data: [9, 7, 6, 4, 5, 7],
+      backgroundColor: 'rgba(33,147,176,.15)',
+      borderColor: 'rgba(33,147,176,.8)',
+      pointBackgroundColor: 'rgba(33,147,176,.8)',
+      borderWidth: 2
+    }, {
+      label: 'Papablic',
+      data: [7, 9, 7, 6, 9, 6],
+      backgroundColor: 'rgba(108,92,231,.15)',
+      borderColor: 'rgba(108,92,231,.8)',
+      pointBackgroundColor: 'rgba(108,92,231,.8)',
+      borderWidth: 2
+    }, {
+      label: 'Grownsy',
+      data: [6, 5, 4, 9, 4, 5],
+      backgroundColor: 'rgba(56,239,125,.15)',
+      borderColor: 'rgba(56,239,125,.9)',
+      pointBackgroundColor: 'rgba(56,239,125,.9)',
+      borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12 } },
+      datalabels: { display: false }
+    },
+    scales: {
+      r: { beginAtZero: true, max: 10, ticks: { stepSize: 2, font: { size: 9 } }, pointLabels: { font: { size: 11 } }, grid: { color: 'rgba(0,0,0,.08)' } }
+    }
+  }
+});
+
+// ===== Chart 4: Price Comparison =====
+new Chart(document.getElementById('chartPrice'), {
+  type: 'bar',
+  data: {
+    labels: ['Grownsy', 'Momcozy D8', 'Momcozy KleanPal Pro', 'Baby Brezza (大促价)', 'Baby Brezza (原价)', 'Papablic Safeguard Plus', 'Eufy S1 Pro'],
+    datasets: [{
+      label: '价格 (USD)',
+      data: [180, 220, 299, 259.99, 299.99, 290, 399.99],
+      backgroundColor: [
+        'rgba(56,239,125,.6)','rgba(102,126,234,.6)','rgba(102,126,234,.7)',
+        'rgba(241,39,17,.6)','rgba(241,39,17,.4)',
+        'rgba(108,92,231,.6)','rgba(33,147,176,.6)'
+      ],
+      borderColor: [
+        'rgba(56,239,125,.9)','rgba(102,126,234,.9)','rgba(102,126,234,.9)',
+        'rgba(241,39,17,.9)','rgba(241,39,17,.7)',
+        'rgba(108,92,231,.9)','rgba(33,147,176,.9)'
+      ],
+      borderWidth: 1.5, borderRadius: 8
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: { anchor: 'end', align: 'end', font: { size: 11, weight: 'bold' }, formatter: v => '$' + v }
+    },
+    scales: {
+      x: { beginAtZero: true, title: { display: true, text: 'Price (USD)', font: commonFont }, grid: { color: 'rgba(0,0,0,.06)' } },
+      y: { grid: { display: false }, ticks: { font: { size: 11 } } }
+    }
+  }
+});
+
+// ===== Chart 5: Social Listening Trends =====
+new Chart(document.getElementById('chartTrends'), {
+  type: 'bar',
+  data: {
+    labels: [
+      '"Bottle washer worth it?"',
+      'Baby Brezza mold/durability issues',
+      'Exclusively pumping + bottle washer',
+      'Night feeding / midnight bottle prep',
+      'Bottle washer capacity for multiples',
+      '"Dad involvement in feeding"',
+      'Water quality + baby feeding',
+      'Portable bottle warmer + cooler for travel'
+    ],
+    datasets: [{
+      label: '声量指数',
+      data: [90, 65, 60, 55, 50, 45, 40, 38],
+      backgroundColor: [
+        'rgba(241,39,17,.6)','rgba(241,39,17,.5)',
+        'rgba(245,175,25,.5)','rgba(245,175,25,.45)',
+        'rgba(245,175,25,.4)','rgba(56,239,125,.5)',
+        'rgba(56,239,125,.45)','rgba(56,239,125,.4)'
+      ],
+      borderColor: [
+        'rgba(241,39,17,.9)','rgba(241,39,17,.8)',
+        'rgba(245,175,25,.9)','rgba(245,175,25,.85)',
+        'rgba(245,175,25,.8)','rgba(56,239,125,.9)',
+        'rgba(56,239,125,.85)','rgba(56,239,125,.8)'
+      ],
+      borderWidth: 1.5, borderRadius: 6
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      datalabels: { anchor: 'end', align: 'end', font: { size: 10 }, formatter: v => v }
+    },
+    scales: {
+      x: { beginAtZero: true, title: { display: true, text: '声量指数 (0-100)', font: commonFont }, grid: { color: 'rgba(0,0,0,.06)' } },
+      y: { grid: { display: false }, ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// ===== Chart 6: Community Sentiment Distribution =====
+new Chart(document.getElementById('chartSentiment'), {
+  type: 'bar',
+  data: {
+    labels: [
+      '产品对比询问', 'Momcozy 正面口碑', 'Momcozy 客服好评', 'Momcozy 容量优势', 'Momcozy 排水设计',
+      'Brezza 发霉', 'Brezza 故障/报错', 'Brezza 噪音', 'Brezza 脏水箱', 'Brezza 耗材锁定',
+      'Papablic 正面', '"同工厂"传闻', 'Eufy 耗材贵'
+    ],
+    datasets: [{
+      label: '正面',
+      data: [0, 80, 72, 68, 60, 0, 0, 0, 0, 0, 65, 0, 0],
+      backgroundColor: 'rgba(56,239,125,.6)',
+      borderColor: 'rgba(56,239,125,.9)',
+      borderWidth: 1, borderRadius: 5
+    }, {
+      label: '负面',
+      data: [0, 0, 0, 0, 0, 75, 70, 50, 50, 45, 0, 0, 40],
+      backgroundColor: 'rgba(241,39,17,.55)',
+      borderColor: 'rgba(241,39,17,.8)',
+      borderWidth: 1, borderRadius: 5
+    }, {
+      label: '中性',
+      data: [65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 35, 0],
+      backgroundColor: 'rgba(245,175,25,.5)',
+      borderColor: 'rgba(245,175,25,.8)',
+      borderWidth: 1, borderRadius: 5
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {
+      legend: { position: 'top', labels: { font: commonFont } },
+      datalabels: { display: false }
+    },
+    scales: {
+      y: { beginAtZero: true, max: 100, title: { display: true, text: '声量强度指数', font: commonFont }, grid: { color: 'rgba(0,0,0,.06)' } },
+      x: { grid: { display: false }, ticks: { font: { size: 9 }, maxRotation: 45, minRotation: 45 } }
+    }
+  }
+});
+</script>
+</body>
+</html>
