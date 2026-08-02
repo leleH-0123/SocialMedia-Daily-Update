@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Momcozy Feedmates — Social Media Daily Report Dashboard | 2026-07-30</title>
+<title>Momcozy Feedmates — Social Media Daily Report Dashboard | 2026-08-02</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
 <style>
@@ -19,12 +19,12 @@
 
   /* Header */
   .header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
     border-radius: 16px;
     padding: 32px 36px;
     color: #fff;
     margin-bottom: 24px;
-    box-shadow: 0 4px 24px rgba(102,126,234,.25);
+    box-shadow: 0 4px 24px rgba(245,87,108,.25);
   }
   .header h1 { font-size: 26px; font-weight: 700; margin-bottom: 6px; }
   .header .subtitle { font-size: 14px; opacity: .88; }
@@ -46,12 +46,12 @@
   .summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
   .summary-card { border-radius: 12px; padding: 18px 20px; color: #fff; position: relative; overflow: hidden; }
   .summary-card .label { font-size: 12px; opacity: .85; margin-bottom: 4px; }
-  .summary-card .value { font-size: 24px; font-weight: 700; line-height: 1.2; }
-  .summary-card .note { font-size: 11px; opacity: .75; margin-top: 6px; }
+  .summary-card .value { font-size: 22px; font-weight: 700; line-height: 1.2; }
+  .summary-card .note { font-size: 11px; opacity: .85; margin-top: 6px; }
+  .sc-pink { background: linear-gradient(135deg, #f093fb, #f5576c); }
   .sc-purple { background: linear-gradient(135deg, #667eea, #764ba2); }
-  .sc-teal { background: linear-gradient(135deg, #11998e, #38ef7d); }
+  .sc-green { background: linear-gradient(135deg, #11998e, #38ef7d); }
   .sc-orange { background: linear-gradient(135deg, #f12711, #f5af19); }
-  .sc-blue { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
 
   /* Two column layout */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -80,6 +80,7 @@
   .tag-green { background: #e8f5e9; color: #2e7d32; }
   .tag-blue { background: #e3f2fd; color: #1565c0; }
   .tag-purple { background: #f3e5f5; color: #7b1fa2; }
+  .tag-pink { background: #fce4ec; color: #c2185b; }
 
   /* Hot topic cards */
   .hot-topics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
@@ -106,14 +107,14 @@
   /* Calendar */
   .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
   .cal-day { border: 1px solid #e8e8e8; border-radius: 10px; padding: 12px; min-height: 120px; }
-  .cal-day .cal-date { font-size: 12px; font-weight: 700; color: #667eea; margin-bottom: 6px; }
+  .cal-day .cal-date { font-size: 12px; font-weight: 700; color: #f5576c; margin-bottom: 6px; }
   .cal-day .cal-platform { font-size: 10px; color: #888; margin-bottom: 2px; }
   .cal-day .cal-title { font-size: 11px; color: #333; line-height: 1.4; }
-  .cal-day.today { border-color: #667eea; border-width: 2px; background: #f8f9ff; }
+  .cal-day.today { border-color: #f5576c; border-width: 2px; background: #fff5f7; }
 
   /* Competitor cards */
-  .comp-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
-  .comp-card { border: 1px solid #e8e8e8; border-radius: 12px; padding: 18px; }
+  .comp-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 20px; }
+  .comp-card { border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; }
   .comp-card .comp-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
   .comp-card .comp-handle { font-size: 12px; color: #888; margin-bottom: 10px; }
   .comp-card .comp-stat { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px; }
@@ -136,12 +137,12 @@
     <h1>Momcozy Feedmates — Social Media Daily Report</h1>
     <div class="subtitle">Bottle Washer / Baby Food Maker / Bottle Warmer & Cooler</div>
     <div class="meta">
-      <span>📅 2026-07-30 (周四)</span>
-      <span>🕐 数据截止 02:35 GMT+8</span>
+      <span>📅 2026-08-02 (周日)</span>
+      <span>🕐 数据截止 02:45 GMT+8</span>
       <span>📊 12 节完整报告</span>
       <span>🌐 自动部署 GitHub Pages</span>
     </div>
-    <div class="status-badge">🟢 自动化运行中 · 第 10 次执行</div>
+    <div class="status-badge">🔥 "母乳喂养月"战役进行中 · 第 11 次执行</div>
   </div>
 
   <!-- Section 1: Executive Summary -->
@@ -149,35 +150,34 @@
     <div class="section-title"><span class="icon">📋</span> 1. Executive Summary</div>
     <div class="section-desc">今日核心发现摘要</div>
     <div class="summary-grid">
-      <div class="summary-card sc-purple">
-        <div class="label">🏆 双榜登顶</div>
-        <div class="value">GooGaia #1 + Babylist #1</div>
-        <div class="note">KleanPal Pro 92/100 · Best Overall</div>
+      <div class="summary-card sc-pink">
+        <div class="label">🏆 母乳喂养月战役</div>
+        <div class="value">BDBW20 20% OFF</div>
+        <div class="note">KleanPal Pro $239.99 · 至 8/7</div>
       </div>
-      <div class="summary-card sc-teal">
-        <div class="label">📈 TikTok 粉丝增长</div>
-        <div class="value">442.7K (+6.8K)</div>
-        <div class="note">置顶视频 4.2M 播放持续引流</div>
+      <div class="summary-card sc-purple">
+        <div class="label">📚 返校季开启</div>
+        <div class="value">妈妈早晨效率</div>
+        <div class="note">返校 hack 内容爆发 · Momcozy 天然契合</div>
+      </div>
+      <div class="summary-card sc-green">
+        <div class="label">💬 社区共识</div>
+        <div class="value">Momcozy > Brezza</div>
+        <div class="note">7月新增多 Reddit/WhatToExpect 帖</div>
       </div>
       <div class="summary-card sc-orange">
-        <div class="label">💰 竞品价格战白热化</div>
-        <div class="value">$227.99 ~ $399.99</div>
-        <div class="note">Grownsy/Papablic/Eufy 全线促销</div>
-      </div>
-      <div class="summary-card sc-blue">
-        <div class="label">📱 TikTok 品类爆发</div>
-        <div class="value">206万 GMV</div>
-        <div class="note">5合1奶瓶刷验证品类潜力</div>
+        <div class="label">⚠️ Eufy Baby TK</div>
+        <div class="value">疑似停用</div>
+        <div class="note">今日"Couldn't find this account"</div>
       </div>
     </div>
     <p style="font-size: 13px; color: #555; line-height: 1.7; margin-top: 10px;">
-      今日核心发现聚焦六大维度：<strong>① Momcozy KleanPal Pro 同时登顶 GooGaia 评分榜 #1（92/100）和 Babylist 测评榜 #1（Best Overall）</strong>——双权威背书确认品类领先地位；
-      <strong>② Momcozy TikTok 粉丝增长至 442.7K（+6.8K，+1.56%）</strong>——置顶视频"成为妈妈后被贴标签"4.2M 播放持续引流；
-      <strong>③ 竞品价格战白热化</strong>——Grownsy $227.99 / Papablic $349.99 / Eufy $399.99 全线促销；
-      <strong>④ Reddit 社区共识形成：Momcozy > Baby Brezza</strong>——容量、泵件兼容性、性价比全面超越；
-      <strong>⑤ 国产 5 合 1 奶瓶刷 TikTok 美区 GMV 206 万元</strong>——奶瓶清洁品类在 TikTok 具备病毒传播力；
-      <strong>⑥ "早餐吃啥"话题爆火（抖音 42 亿播放）</strong>——与 Baby Food Maker 品线天然契合。
-      ⚠️ 今日竞品 TikTok WebFetch 多数失效，仅 Momcozy 官方 TK 数据成功抓取。
+      今日核心发现聚焦五大维度：<strong>① Momcozy 启动"母乳喂养月"Breathe & Breastfeed 营销战役（7/27-8/11）</strong>——8/1-7 期间 KleanPal Pro 享 BDBW20 20% OFF，正值世界母乳喂养周；
+      <strong>② GooGaia 评分榜稳定：KleanPal Pro #1（92/100，High Confidence），D8 维持 #7（88/100，Moderate）</strong>；
+      <strong>③ 竞品价格战常态化</strong>——Grownsy/Papablic $229.98、Eufy $399.99、Baby Brezza $239.99；
+      <strong>④ Reddit/WhatToExpect 社区"Momcozy > Baby Brezza"共识扩散</strong>——多用户"Momcozy wins hands down"；
+      <strong>⑤ 8 月返校季开启</strong>——妈妈内容转向"早晨效率/午餐准备/孩子独立"。
+      ⚠️ 今日 Eufy Baby 账号疑似停用，连续 6 天竞品 TikTok 一手数据无法获取。
     </p>
   </div>
 
@@ -190,22 +190,22 @@
         <div class="hot-num">1</div>
         <div class="hot-content">
           <span class="hot-badge tag-red">🔴 极高 · ⭐⭐⭐⭐⭐</span>
-          <div class="hot-title">🏆 Momcozy KleanPal Pro 双榜登顶：GooGaia 92/100 #1 + Babylist Best Overall</div>
-          <div class="hot-desc">GooGaia 10款清洗机综合评分 #1（92/100），Babylist 三孩妈妈实测评为 Best Overall。双权威背书确认品类领先地位。竞品：Papablic 91(#2) / Eufy 90(#3) / Grownsy 90(#4) / Baby Brezza 88(#6)。</div>
+          <div class="hot-title">🏆 Momcozy 启动"母乳喂养月"促销：KleanPal Pro 20% OFF</div>
+          <div class="hot-desc">Yahoo Finance 7/29 官宣 Breathe & Breastfeed 战役。Phase 2 (8/1-7) BDBW20 享 KleanPal Pro 20% OFF ($239.99)。Phase 3 (8/8-11) BDBW15 覆盖 M5/KleanPal/Cooler。**今天处于 Phase 2 中段**。</div>
           <div class="hot-meta">
-            <span>📰 GooGaia + Babylist</span>
-            <span>🔗 googaia.com</span>
+            <span>📰 Yahoo Finance</span>
+            <span>🔗 finance.yahoo.com</span>
           </div>
         </div>
       </div>
       <div class="hot-card">
         <div class="hot-num">2</div>
         <div class="hot-content">
-          <span class="hot-badge tag-red">🔴 极高 · ⭐⭐⭐⭐⭐</span>
-          <div class="hot-title">💰 竞品价格战白热化：Grownsy $227.99 / Papablic $349.99 / Eufy $399.99</div>
-          <div class="hot-desc">Grownsy EaseClean Pro 降至$227.99(-21%)叠加25% promo ~$170。Papablic SafeguardPlus $349.99(-$50)含免费清洁片。Eufy S1 Pro $399.99(-$30)。Baby Brezza $239.99。Momcozy $299.99维持常规价。</div>
+          <span class="hot-badge tag-red">🔴 极高 · ⭐⭐⭐⭐</span>
+          <div class="hot-title">📚 8 月返校季开启：妈妈内容聚焦"早晨效率/午餐准备"</div>
+          <div class="hot-desc">TikTok mom hacks: outfit burrito 卷装衣服、批量三明治、鞋贴纸、自助早餐站。Insider/Fox News 大量报道。Momcozy 解放双手定位与返校早晨需求天然契合。</div>
           <div class="hot-meta">
-            <span>📰 ADVFN / Papablic / DealMoon</span>
+            <span>📰 Fox News / Yahoo / Insider</span>
           </div>
         </div>
       </div>
@@ -213,10 +213,11 @@
         <div class="hot-num">3</div>
         <div class="hot-content">
           <span class="hot-badge tag-yellow">🟠 高 · ⭐⭐⭐⭐⭐</span>
-          <div class="hot-title">📱 国产5合1奶瓶刷 TikTok美区 GMV 206万元 — 品类爆发力验证</div>
-          <div class="hot-desc">5合1多功能奶瓶刷TikTok美区走红，周销2445件，累计3.3万单，GMV 29.96万美元(~206万元)。证明奶瓶清洁品类在TikTok具病毒传播力。Momcozy应加速TikTok Shop入驻。</div>
+          <div class="hot-title">💬 Reddit/WhatToExpect 共识：Momcozy 全面超越 Baby Brezza</div>
+          <div class="hot-desc">nipher12: "Momcozy wins hands down! Brezza never dried that well and hated dumping the dirty water." 7 月新增多 Reddit/WhatToExpect 帖明示推荐 Momcozy。关键优势：容量、排水、泵件兼容。</div>
           <div class="hot-meta">
-            <span>📰 AMZ123 / GlobalPod</span>
+            <span>📰 WhatToExpect + Reddit</span>
+            <span>🔗 community.whattoexpect.com</span>
           </div>
         </div>
       </div>
@@ -224,32 +225,34 @@
         <div class="hot-num">4</div>
         <div class="hot-content">
           <span class="hot-badge tag-yellow">🟠 高 · ⭐⭐⭐⭐</span>
-          <div class="hot-title">🌅 "早餐吃啥"话题爆火：小红书8.2亿阅读 / 抖音42亿播放</div>
-          <div class="hot-desc">暑期"早餐吃啥"登全国家长群热搜TOP1。小红书#早餐吃啥 8.2亿阅读/137万笔记，抖音42亿播放。63.7%家长显示"轻度崩溃"。与Baby Food Maker品线天然契合，内容切入窗口已打开。</div>
+          <div class="hot-title">🏅 Grownsy EaseClean Pro 销量登顶：2K+/月 + 4.8 星</div>
+          <div class="hot-desc">EaseClean Pro 亚马逊同品类 2K+ 上月销量，4.8 星 / 3,149 评论。3 年保修 + 60 清洁片。价格战白热化持续。</div>
           <div class="hot-meta">
-            <span>📰 搜狐 7/2026</span>
+            <span>📰 Pregnancy Boss / BoundByFlame</span>
           </div>
         </div>
       </div>
       <div class="hot-card">
         <div class="hot-num">5</div>
         <div class="hot-content">
-          <span class="hot-badge tag-blue">🟡 中 · ⭐⭐⭐⭐⭐</span>
-          <div class="hot-title">💬 Reddit社区共识：Momcozy在容量和性价比上优于Baby Brezza</div>
-          <div class="hot-desc">多个Reddit帖子指出Momcozy在容量、泵件兼容性、性价比方面优于Baby Brezza。r/Buyingforbaby瓶洗机讨论帖92评论/3.4K月访/$24K年流量价值，Momcozy被多次提及。社区口碑红利持续释放。</div>
+          <span class="hot-badge tag-blue">🟡 中 · ⭐⭐⭐</span>
+          <div class="hot-title">🌟 Eufy S1 Pro TÜV SÜD 认证 + 香港渠道展开</div>
+          <div class="hot-desc">全球首张智能洗奶瓶机 TÜV SÜD 认证。香港 ReadyGoHK 促销 ¥2,916 (~USD 400)。软水器 + 3D HydroBlast 59 喷头。</div>
           <div class="hot-meta">
-            <span>📰 UninfluencedReview / Reddit</span>
+            <span>📰 ReadyGoHK</span>
+            <span>🔗 readygohk.com</span>
           </div>
         </div>
       </div>
       <div class="hot-card">
         <div class="hot-num">6</div>
         <div class="hot-content">
-          <span class="hot-badge tag-blue">🟡 中 · ⭐⭐⭐⭐</span>
-          <div class="hot-title">🤱 "亚马尔奶奶喂养哲学"热搜：反对母乳道德绑架，尊重母亲选择</div>
-          <div class="hot-desc">7/23"孙子想吃什么都给他做"冲热搜，获数十万赞。击中当代妈妈在母乳喂养问题上被"规则化"的焦虑。Momcozy内容可借势：强调"无论母乳还是配方奶，Momcozy都支持你的选择"。</div>
+          <span class="hot-badge tag-blue">🟡 中 · ⭐⭐⭐</span>
+          <div class="hot-title">⚠️ Coffee 喂 8 个月大女儿共用汤匙事件 — 卫生争议</div>
+          <div class="hot-desc">港星 Coffee 与 8 个月大女儿共用汤匙喂食，被网友提醒卫生风险（成人口腔 6 大病毒：蛀牙菌/肠胃炎/HSV 疱疹等，严重可致脑膜炎）。儿科医生警示。</div>
           <div class="hot-meta">
-            <span>📰 新浪 7/23</span>
+            <span>📰 Ohpama</span>
+            <span>🔗 ohpama.com</span>
           </div>
         </div>
       </div>
@@ -259,42 +262,42 @@
   <!-- Section 2.3: 7-Day Content Calendar -->
   <div class="section">
     <div class="section-title"><span class="icon">📅</span> 2.3 基于热点的 7 天内容日历建议</div>
-    <div class="section-desc">2026-07-30 至 2026-08-05 · 多平台 · 多品线</div>
+    <div class="section-desc">2026-08-02 至 2026-08-08 · "母乳喂养月"战役节奏</div>
     <div class="calendar-grid">
       <div class="cal-day today">
-        <div class="cal-date">7/30 (Thu)</div>
+        <div class="cal-date">8/2 (Sun) 🔥</div>
         <div class="cal-platform">📱 TikTok</div>
-        <div class="cal-title">🔴「为什么10款评测Momcozy排第一？」评测引用</div>
-      </div>
-      <div class="cal-day">
-        <div class="cal-date">7/31 (Fri)</div>
-        <div class="cal-platform">📸 Instagram</div>
-        <div class="cal-title">🔴 GooGaia 92/100 + Babylist Best = 妈妈的选择</div>
-      </div>
-      <div class="cal-day">
-        <div class="cal-date">8/1 (Sat)</div>
-        <div class="cal-platform">📱 TikTok</div>
-        <div class="cal-title">🟠 $299 vs $228 vs $350 — 评测第一名不是最便宜的</div>
-      </div>
-      <div class="cal-day">
-        <div class="cal-date">8/2 (Sun)</div>
-        <div class="cal-platform">📸 Instagram</div>
-        <div class="cal-title">🟠 6分钟早餐挑战 Day1：苹果南瓜泥</div>
+        <div class="cal-title">🔴「世界母乳喂养周｜妈妈不只是喂养」+ BDBW20 倒计时 5 天</div>
       </div>
       <div class="cal-day">
         <div class="cal-date">8/3 (Mon)</div>
-        <div class="cal-platform">📱 TikTok</div>
-        <div class="cal-title">🟠 每天30分钟×365天=182小时，你的时间值多少钱？</div>
+        <div class="cal-platform">📸 Instagram</div>
+        <div class="cal-title">🔴「Breathe & Breastfeed｜KleanPal Pro 20% OFF 限 5 天」+ 情感故事</div>
       </div>
       <div class="cal-day">
         <div class="cal-date">8/4 (Tue)</div>
-        <div class="cal-platform">📸 Instagram</div>
-        <div class="cal-title">🟡 6分钟早餐挑战 Day2：蓝莓燕麦粥</div>
+        <div class="cal-platform">📱 TikTok</div>
+        <div class="cal-title">🟠「为什么 Reddit 妈妈都在选 Momcozy？3 个真实对比」</div>
       </div>
       <div class="cal-day">
         <div class="cal-date">8/5 (Wed)</div>
+        <div class="cal-platform">📸 Instagram</div>
+        <div class="cal-title">🟠「开学前一周，妈妈的早晨应该这样被拯救」返校季</div>
+      </div>
+      <div class="cal-day">
+        <div class="cal-date">8/6 (Thu)</div>
         <div class="cal-platform">📱 TikTok</div>
-        <div class="cal-title">🟡 UGC转发 + "加入Momcozy Village"</div>
+        <div class="cal-title">🟠「$240 vs $228 vs $230 — 评测第一的世界母乳喂养周促销」</div>
+      </div>
+      <div class="cal-day">
+        <div class="cal-date">8/7 (Fri)</div>
+        <div class="cal-platform">📸 Instagram</div>
+        <div class="cal-title">🟠「Breathe & Breastfeed 最后 24 小时：你的支持 = 妈妈的力量」</div>
+      </div>
+      <div class="cal-day">
+        <div class="cal-date">8/8 (Sat)</div>
+        <div class="cal-platform">📱 TikTok</div>
+        <div class="cal-title">🟡「Encore 期开始！BDBW15 覆盖 M5 / KleanPal / Cooler」</div>
       </div>
     </div>
   </div>
@@ -302,16 +305,17 @@
   <!-- Section 3: Competitor TikTok -->
   <div class="section">
     <div class="section-title"><span class="icon">🕵️</span> 3. 竞品社媒动态监控</div>
-    <div class="section-desc">每日更新 · 一手 TikTok 数据 + 二手 IG/评测数据</div>
+    <div class="section-desc">每日更新 · 一手 TikTok 数据 + 二手 IG/评测数据 · ⚠️ 连续 6 天 TK 一手数据失效</div>
 
     <div class="comp-grid">
-      <div class="comp-card">
-        <div class="comp-name">Momcozy ✅</div>
+      <div class="comp-card" style="border-color: #f5576c; border-width: 2px;">
+        <div class="comp-name">Momcozy 🏆</div>
         <div class="comp-handle">@momcozyofficial</div>
-        <div class="comp-stat"><span class="stat-label">粉丝</span><span class="stat-value" style="color:#2e7d32;">442.7K (+6.8K)</span></div>
-        <div class="comp-stat"><span class="stat-label">总获赞</span><span class="stat-value">1.7M</span></div>
-        <div class="comp-stat"><span class="stat-label">关注</span><span class="stat-value">62</span></div>
-        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#2e7d32;">✅ 一手 WebFetch</span></div>
+        <div class="comp-stat"><span class="stat-label">粉丝</span><span class="stat-value" style="color:#2e7d32;">442.7K (7/30)</span></div>
+        <div class="comp-stat"><span class="stat-label">总获赞</span><span class="stat-value">1.7M (7/30)</span></div>
+        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#f57f17;">⚠️ 沿用 7/30</span></div>
+        <div class="comp-stat"><span class="stat-label">GooGaia</span><span class="stat-value">92/100 #1</span></div>
+        <div class="comp-stat"><span class="stat-label">促销</span><span class="stat-value" style="color:#f5576c;">BDBW20 20% OFF</span></div>
       </div>
       <div class="comp-card">
         <div class="comp-name">Baby Brezza</div>
@@ -320,37 +324,48 @@
         <div class="comp-stat"><span class="stat-label">总获赞</span><span class="stat-value" style="color:#999;">⚠️ 待确认</span></div>
         <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#d63031;">❌ WebFetch 失败</span></div>
         <div class="comp-stat"><span class="stat-label">GooGaia</span><span class="stat-value">88/100 (#6)</span></div>
+        <div class="comp-stat"><span class="stat-label">促销</span><span class="stat-value">WELCOMEBABY 22%</span></div>
       </div>
       <div class="comp-card">
         <div class="comp-name">Grownsy</div>
         <div class="comp-handle">@grownsy</div>
         <div class="comp-stat"><span class="stat-label">粉丝</span><span class="stat-value" style="color:#999;">⚠️ 待确认</span></div>
-        <div class="comp-stat"><span class="stat-label">LIVE</span><span class="stat-value" style="color:#f57f17;">7/30 2AM 预告</span></div>
-        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#f57f17;">⚠️ 部分 (播放列表)</span></div>
+        <div class="comp-stat"><span class="stat-label">销量</span><span class="stat-value" style="color:#2e7d32;">2K+/月 🔥</span></div>
+        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#d63031;">❌ WebFetch 失败</span></div>
         <div class="comp-stat"><span class="stat-label">GooGaia</span><span class="stat-value">90/100 (#4)</span></div>
+        <div class="comp-stat"><span class="stat-label">促销</span><span class="stat-value">$229.98 (-21%)</span></div>
       </div>
       <div class="comp-card">
-        <div class="comp-name">Papablic / Eufy</div>
-        <div class="comp-handle">@papablic_official / @eufy_baby</div>
+        <div class="comp-name">Papablic</div>
+        <div class="comp-handle">@papablic_official</div>
         <div class="comp-stat"><span class="stat-label">粉丝</span><span class="stat-value" style="color:#999;">⚠️ 待确认</span></div>
-        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#d63031;">❌ 登录墙/JS屏蔽</span></div>
-        <div class="comp-stat"><span class="stat-label">Papablic GooGaia</span><span class="stat-value">91/100 (#2)</span></div>
-        <div class="comp-stat"><span class="stat-label">Eufy GooGaia</span><span class="stat-value">90/100 (#3)</span></div>
+        <div class="comp-stat"><span class="stat-label">总获赞</span><span class="stat-value" style="color:#999;">⚠️ 待确认</span></div>
+        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#d63031;">❌ 登录墙</span></div>
+        <div class="comp-stat"><span class="stat-label">GooGaia</span><span class="stat-value">91/100 (#2)</span></div>
+        <div class="comp-stat"><span class="stat-label">促销</span><span class="stat-value">$229.98 (-21%)</span></div>
+      </div>
+      <div class="comp-card" style="border-color: #d63031;">
+        <div class="comp-name">Eufy Baby ⚠️</div>
+        <div class="comp-handle">@eufy_baby</div>
+        <div class="comp-stat"><span class="stat-label">粉丝</span><span class="stat-value" style="color:#d63031;">❌ 账号不存在</span></div>
+        <div class="comp-stat"><span class="stat-label">状态</span><span class="stat-value" style="color:#d63031;">疑似停用</span></div>
+        <div class="comp-stat"><span class="stat-label">数据来源</span><span class="stat-value" style="color:#d63031;">❌ 404 Not Found</span></div>
+        <div class="comp-stat"><span class="stat-label">GooGaia</span><span class="stat-value">90/100 (#3)</span></div>
+        <div class="comp-stat"><span class="stat-label">促销</span><span class="stat-value">$399.99 (HK 2,916)</span></div>
       </div>
     </div>
 
-    <h4 style="margin-bottom: 12px; color: #333;">Momcozy TikTok TOP 5 视频（一手数据 ✅）</h4>
+    <h4 style="margin-bottom: 12px; color: #333;">⚠️ 竞品 TikTok 数据连续性说明</h4>
     <table>
       <thead>
-        <tr><th>#</th><th>视频主题</th><th>播放量</th><th>合作 KOL</th><th>品线</th></tr>
+        <tr><th>品牌</th><th>账号状态</th><th>连续失效天数</th><th>说明</th></tr>
       </thead>
       <tbody>
-        <tr><td>1</td><td>📌 "成为妈妈后被贴标签"街访（置顶）</td><td><strong>4.2M</strong></td><td>—</td><td><span class="tag tag-purple">品牌建设</span></td></tr>
-        <tr><td>2</td><td>📌 产假故事 & PaidLeave.ai（置顶）</td><td><strong>1.5M</strong></td><td>@momsfirstus</td><td><span class="tag tag-purple">品牌建设</span></td></tr>
-        <tr><td>3</td><td>Air 1 吸乳器用户体验</td><td>535.9K</td><td>@onewiththepump</td><td><span class="tag tag-blue">吸乳器</span></td></tr>
-        <tr><td>4</td><td>Wellness 1 吸乳舒缓产品</td><td>454K</td><td>@thesibleyfamily_</td><td><span class="tag tag-blue">吸乳器</span></td></tr>
-        <tr><td>5</td><td>Bottle Washer 夏季日常+促销码</td><td>438.3K</td><td>—</td><td><span class="tag tag-green">Bottle Washer</span></td></tr>
-        <tr><td>7</td><td>D8 Bottle Washer 使用体验</td><td>23.4K</td><td>@shaydiazfit</td><td><span class="tag tag-green">D8 Bottle Washer</span></td></tr>
+        <tr><td>Baby Brezza</td><td>WebFetch 失败</td><td>6 天</td><td>仅返回页面标题，JS 重渲染屏蔽</td></tr>
+        <tr><td>Grownsy</td><td>WebFetch 失败</td><td>6 天</td><td>仅返回页面标题，JS 重渲染屏蔽</td></tr>
+        <tr><td>Papablic</td><td>登录墙</td><td>6 天</td><td>WebFetch 返回"Log in"页面</td></tr>
+        <tr style="background: #fff5f5;"><td><strong>Eufy Baby</strong></td><td><strong>❌ 疑似停用</strong></td><td><strong>1 天</strong></td><td><strong style="color: #d63031;">今日返回"Couldn't find this account" — 首次出现账号不存在提示</strong></td></tr>
+        <tr><td>Momcozy</td><td>骨架数据</td><td>1 天</td><td>仅返回标题 + 简介"Cozy Reformer for Moms."</td></tr>
       </tbody>
     </table>
   </div>
@@ -358,17 +373,17 @@
   <!-- Section 4: Account Performance -->
   <div class="section">
     <div class="section-title"><span class="icon">📊</span> 4. Account Performance Overview</div>
-    <div class="section-desc">已确认账号矩阵 · 本日新增 Momcozy TK 数据</div>
+    <div class="section-desc">已确认账号矩阵 · 本日 TK 一手数据缺失 · 战役关键期</div>
     <div class="account-grid">
       <div class="account-card">
         <div class="platform"><span class="status-dot dot-green"></span>Instagram (主品牌)</div>
         <div class="followers">527K</div>
         <div class="desc">@momcozy · 1,992 帖 · 51 关注</div>
       </div>
-      <div class="account-card" style="border-color: #667eea; border-width: 2px;">
-        <div class="platform"><span class="status-dot dot-green"></span>TikTok (主品牌) 📈</div>
-        <div class="followers" style="color: #667eea;">442.7K</div>
-        <div class="desc">@momcozyofficial · +6.8K · 1.7M 赞</div>
+      <div class="account-card" style="border-color: #f5576c; border-width: 2px;">
+        <div class="platform"><span class="status-dot dot-yellow"></span>TikTok (主品牌) 🔥</div>
+        <div class="followers" style="color: #f5576c;">442.7K</div>
+        <div class="desc">@momcozyofficial · 1.7M 赞 · **战役期**</div>
       </div>
       <div class="account-card">
         <div class="platform"><span class="status-dot dot-yellow"></span>Instagram (Feedmates)</div>
@@ -386,12 +401,15 @@
         <div class="desc">非主营销平台 · 仅客服兜底</div>
       </div>
     </div>
+    <p style="font-size: 12px; color: #888; margin-top: 16px; line-height: 1.6;">
+      ⚠️ 本日新增数据：<strong>Momcozy 启动"母乳喂养月"Breathe & Breastfeed 战役</strong>（7/27-8/11）。Phase 2 (8/1-7) 期间 BDBW20 享 KleanPal Pro 20% OFF ($239.99)。今日（8/2 周日）处于战役中段，<strong>建议手动抓取 Momcozy TK 数据以追踪促销期内容表现</strong>。
+    </p>
   </div>
 
   <!-- Section 5-6: Charts -->
   <div class="section">
     <div class="section-title"><span class="icon">📈</span> 5-6. Content Performance & Top Content</div>
-    <div class="section-desc">Momcozy TikTok 视频播放量分析 · TOP vs LOW</div>
+    <div class="section-desc">Momcozy TikTok 视频播放量分析 · 沿用 7/30 数据 · 战役期建议加推</div>
     <div class="two-col">
       <div class="chart-wrapper">
         <h4 style="margin-bottom: 16px; color: #333;">Top 10 视频播放量</h4>
@@ -411,7 +429,7 @@
   <!-- Section 7: Low Content Diagnosis -->
   <div class="section">
     <div class="section-title"><span class="icon">🔧</span> 7. Low Performing Content Diagnosis</div>
-    <div class="section-desc">低播放量视频诊断与优化建议</div>
+    <div class="section-desc">低播放量视频诊断与优化建议 · D8 内容需紧急优化</div>
     <table>
       <thead>
         <tr><th>视频主题</th><th>播放量</th><th>诊断</th><th>优化建议</th></tr>
@@ -427,13 +445,13 @@
           <td>"小小瞬间"情感内容</td>
           <td><span class="tag tag-red">2,916</span></td>
           <td>与品牌关联度弱，无差异化</td>
-          <td>绑定产品场景（KleanPal洗完奶瓶后的安心感）</td>
+          <td>绑定产品场景（如 KleanPal 洗完奶瓶后的安心感）</td>
         </tr>
         <tr>
           <td>D8 Bottle Washer @shaydiazfit</td>
           <td><span class="tag tag-yellow">23.4K</span></td>
-          <td>钩子"最喜欢的部分"太泛，D8出现太晚</td>
-          <td>前3秒直接展示D8 44喷头工作画面 → "每天多睡30分钟"</td>
+          <td>钩子"最喜欢的部分"太泛，D8 出现太晚</td>
+          <td>前3秒直接展示 D8 44喷头工作画面 → "每天多睡30分钟"</td>
         </tr>
         <tr>
           <td>5个分娩球姿势</td>
@@ -444,7 +462,7 @@
         <tr>
           <td>仍在跳舞仍是妈妈</td>
           <td><span class="tag tag-red">444</span></td>
-          <td>Baby Carrier植入太硬</td>
+          <td>Baby Carrier 植入太硬</td>
           <td>用"产后6周回到舞蹈教室"真实故事线</td>
         </tr>
       </tbody>
@@ -454,7 +472,7 @@
   <!-- Section 8-9: Social Listening -->
   <div class="section">
     <div class="section-title"><span class="icon">💬</span> 8-9. Audience Feedback & Social Listening</div>
-    <div class="section-desc">社区评论分类 · Reddit 舆情 · 关键词声量变化</div>
+    <div class="section-desc">社区评论分类 · Reddit/WhatToExpect 7 月新舆情 · 关键词声量变化</div>
     <div class="two-col">
       <div class="chart-wrapper">
         <h4 style="margin-bottom: 16px; color: #333;">社区评论分类</h4>
@@ -475,24 +493,29 @@
       </thead>
       <tbody>
         <tr>
-          <td>UninfluencedReview</td>
-          <td>"Baby Brezza 被 Momcozy/Grownsy 在容量、泵件兼容性、性价比方面超越"</td>
-          <td><span class="tag tag-green">🟢 正面</span></td>
+          <td>WhatToExpect — Brezza vs Momcozy (7 月新帖)</td>
+          <td>nipher12: "Momcozy wins hands down! Brezza never dried that well and hated dumping the dirty water"</td>
+          <td><span class="tag tag-green">🟢 强烈正面</span></td>
         </tr>
         <tr>
-          <td>r/Buyingforbaby</td>
-          <td>92评论/3.4K月访/$24K年流量价值，Momcozy 被多次提及</td>
-          <td><span class="tag tag-green">🟢 正面</span></td>
+          <td>WhatToExpect — 9 月预产期推荐</td>
+          <td>TiffGriffin: "I second the momcozy bottle washer... we even took the bottle washer with us on vacation when my son was 8 months old"</td>
+          <td><span class="tag tag-green">🟢 正面 · 1.5年用户</span></td>
         </tr>
         <tr>
-          <td>The Breastfeeding Mama</td>
-          <td>"Eufy最佳，Momcozy/Grownsy/Papablic平手（买打折的）"</td>
-          <td><span class="tag tag-yellow">🟡 中性</span></td>
+          <td>Reddit r/ExclusivelyPumping</td>
+          <td>"I would purchase the Momcozy one because it has a larger capacity and you don't have to empty the water out of the back"</td>
+          <td><span class="tag tag-green">🟢 正面 · 高意向</span></td>
         </tr>
         <tr>
-          <td>Babylist 对比测评</td>
-          <td>"Momcozy在设计、用水量、奶瓶固定方面胜出"</td>
-          <td><span class="tag tag-green">🟢 正面</span></td>
+          <td>Reddit — UninfluencedReview</td>
+          <td>"Baby Brezza 被 Momcozy 和 Grownsy 在容量、泵件兼容性、性价比方面超越"</td>
+          <td><span class="tag tag-green">🟢 长期口碑</span></td>
+        </tr>
+        <tr>
+          <td>WhatToExpect — laurabright 反对意见</td>
+          <td>"Brezza 可摆任意位置 (无水槽依赖)"</td>
+          <td><span class="tag tag-yellow">🟡 中性 · 适合小厨房</span></td>
         </tr>
       </tbody>
     </table>
@@ -501,16 +524,18 @@
   <!-- Section 10: Daily Recommendation -->
   <div class="section">
     <div class="section-title"><span class="icon">💡</span> 10. Daily Recommendation</div>
-    <div class="section-desc">Content / Community / Product 三维度建议</div>
+    <div class="section-desc">Content / Community / Product 三维度建议 · 战役关键期</div>
     <div class="two-col">
       <div>
         <h4 style="margin-bottom: 12px; color: #333;">Content 维度</h4>
         <table>
           <tbody>
-            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>制作"双榜#1"内容：GooGaia+Babylist截图+3个胜出原因</td></tr>
-            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>"价格vs价值"对比短视频：$299评测第一 vs $228评测第四</td></tr>
-            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>启动"6分钟早餐挑战"系列，借势42亿播放话题</td></tr>
-            <tr><td><span class="tag tag-blue">🟡中</span></td><td>优化D8 TikTok钩子：前3秒44喷头画面+"每天多睡30分钟"</td></tr>
+            <tr><td><span class="tag tag-red">🔴紧急</span></td><td><strong>"世界母乳喂养周"促销内容</strong>：BDBW20 20% OFF + KleanPal Pro + 真实妈妈故事</td></tr>
+            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>战役期倒计时内容：Phase 2 仅剩 5 天 (8/3-7)</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>"返校季早晨 routine"：KleanPal + BM08 监控 + M5 吸奶</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>"3 个 Reddit 真实对比"UGC：Momcozy vs Brezza (容量/排水/泵件)</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>"价格 vs 价值 + 战役促销"对比短视频：$240 vs $228 vs $230</td></tr>
+            <tr><td><span class="tag tag-blue">🟡中</span></td><td>8/8-11 Encore 期预热：M5 + KleanPal + Cooler 三品线</td></tr>
           </tbody>
         </table>
       </div>
@@ -518,11 +543,12 @@
         <h4 style="margin-bottom: 12px; color: #333;">Community & Product 维度</h4>
         <table>
           <tbody>
-            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>品牌代表 authentic 参与 r/Buyingforbaby 讨论帖</td></tr>
-            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>评估 TikTok Shop 美区入驻（品类爆发验证）</td></tr>
-            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>联系GooGaia提供D8更多评测数据提升信心分</td></tr>
-            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>监控Papablic缺货期，加大Momcozy广告投放</td></tr>
-            <tr><td><span class="tag tag-blue">🟡中</span></td><td>评估KleanPal Pro限时促销（$269.99）应对竞品</td></tr>
+            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>品牌代表 authentic 参与 WhatToExpect / Reddit r/ExclusivelyPumping 讨论</td></tr>
+            <tr><td><span class="tag tag-red">🔴紧急</span></td><td>手动追踪 Eufy Baby TK 账号状态（疑似停用），确认是否永久</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>监控 Baby Brezza AirSwirl + Sterilizer Dryer Mini 新品发布动态</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>联系 GooGaia 编辑团队，提供 D8 更多长期用户评测数据</td></tr>
+            <tr><td><span class="tag tag-yellow">🟠高</span></td><td>评估 Momcozy Bottle Cooler 在 8/8-11 Encore 期的营销推广</td></tr>
+            <tr><td><span class="tag tag-blue">🟡中</span></td><td>重新评估 KleanPal Pro 促销期价格弹性数据</td></tr>
           </tbody>
         </table>
       </div>
@@ -532,21 +558,22 @@
   <!-- Section 11: Competitor Strategy -->
   <div class="section">
     <div class="section-title"><span class="icon">📊</span> 11. 竞品战略深度分析</div>
-    <div class="section-desc">⚠️ 周度更新 · 最近更新 2026-07-27 · 7/30 标注变化点</div>
+    <div class="section-desc">⚠️ 周度更新 · 最近更新 2026-07-30 · 8/2 标注变化点</div>
 
-    <h4 style="margin-bottom: 12px; color: #333;">竞品定位对比表</h4>
+    <h4 style="margin-bottom: 12px; color: #333;">竞品定位对比表（更新于 8/2）</h4>
     <table style="margin-bottom: 24px;">
       <thead>
         <tr><th>维度</th><th>Momcozy KleanPal Pro</th><th>Baby Brezza Pro</th><th>Eufy S1 Pro</th><th>Papablic SafeguardPlus</th><th>Grownsy EaseClean Pro</th></tr>
       </thead>
       <tbody>
-        <tr><td><strong>价格</strong></td><td>$299.99</td><td>$239.99</td><td>$399.99 ↓$30</td><td>$349.99 ↓$50</td><td>$227.99 ↓21%</td></tr>
-        <tr><td><strong>容量</strong></td><td>4瓶</td><td>4瓶</td><td><strong>10瓶</strong></td><td><strong>8瓶</strong></td><td>4瓶</td></tr>
-        <tr><td><strong>喷头数</strong></td><td>26</td><td>20</td><td><strong>59</strong></td><td>26 (122kPa)</td><td>26</td></tr>
-        <tr><td><strong>水过滤</strong></td><td>无</td><td>无</td><td>内置软水器</td><td><strong>PurifyClean</strong></td><td>无</td></tr>
-        <tr><td><strong>GooGaia</strong></td><td><strong>92 (#1) 🏆</strong></td><td>88 (#6)</td><td>90 (#3)</td><td>91 (#2)</td><td>90 (#4)</td></tr>
-        <tr><td><strong>Babylist</strong></td><td><strong>#1 Best Overall 🏆</strong></td><td>#4 No Sink</td><td>—</td><td>#2 Runner Up</td><td>#3 Easiest</td></tr>
-        <tr><td><strong>特色</strong></td><td>评测双#1 / 2.5L省水</td><td>无需水槽</td><td>10瓶大容量 / App</td><td>水过滤 / 8瓶</td><td>最低价 / 易用</td></tr>
+        <tr><td><strong>价格</strong></td><td style="background: #fff5f7;"><strong>$239.99 (-20%)</strong></td><td>$239.99</td><td>$399.99</td><td>$349.99 (↓$50)</td><td>$229.98 (-21%)</td></tr>
+        <tr><td><strong>促销</strong></td><td style="background: #fff5f7;"><strong>BDBW20 (8/1-7)</strong></td><td>WELCOMEBABY 22%</td><td>—</td><td>—</td><td>持续</td></tr>
+        <tr><td><strong>容量</strong></td><td>4 瓶 (可堆叠 5+)</td><td>4 瓶</td><td><strong>10 瓶</strong></td><td><strong>8 瓶</strong></td><td>4 瓶 (可堆叠 8)</td></tr>
+        <tr><td><strong>喷头数</strong></td><td>26</td><td>20</td><td><strong>59 (63 in S1 Pro)</strong></td><td>26 (122kPa)</td><td>26 (24kPa)</td></tr>
+        <tr><td><strong>水过滤</strong></td><td>无</td><td>无</td><td>内置软水器</td><td><strong>PurifyClean</strong></td><td>HEPA 滤网</td></tr>
+        <tr><td><strong>App 控制</strong></td><td>无</td><td>部分新机型</td><td>✅ eufy App</td><td>无</td><td>无</td></tr>
+        <tr><td><strong>GooGaia</strong></td><td style="background: #fff5f7;"><strong>92 (#1) 🏆</strong></td><td>88 (#6)</td><td>90 (#3)</td><td>91 (#2)</td><td>90 (#4)</td></tr>
+        <tr><td><strong>特色</strong></td><td>评测 #1 / 2.5L 省水</td><td>无需水槽 / 摆位灵活</td><td>10 瓶 / TÜV 认证 / App</td><td>水过滤 / 8 瓶 / 122kPa</td><td>最低价 / 3 年保修</td></tr>
       </tbody>
     </table>
 
@@ -558,7 +585,7 @@
         </div>
       </div>
       <div class="chart-wrapper">
-        <h4 style="margin-bottom: 16px; color: #333;">竞品价格对比 (USD)</h4>
+        <h4 style="margin-bottom: 16px; color: #333;">竞品价格对比 (USD · 8/2 战役期)</h4>
         <div class="chart-container" style="height: 300px;">
           <canvas id="priceChart"></canvas>
         </div>
@@ -569,56 +596,64 @@
   <!-- Section 12: Alert System -->
   <div class="section">
     <div class="section-title"><span class="icon">🚨</span> 12. Alert System</div>
-    <div class="section-desc">预警触发条件监控 · 今日 6 项预警</div>
-    <div class="alert-item">
-      <div class="alert-icon alert-medium">💰</div>
+    <div class="section-desc">预警触发条件监控 · 今日 7 项预警 · 战役关键期</div>
+    <div class="alert-item" style="background: #fff5f5; padding-left: 12px; border-radius: 6px;">
+      <div class="alert-icon alert-high">🔥</div>
       <div class="alert-content">
-        <div class="alert-title">🟠 竞品价格战 — Grownsy $227.99（+25% promo ~$170）</div>
-        <div class="alert-desc">与 Momcozy $299.99 差距 $130。建议不跟价，用"双榜#1"价值叙事对抗。</div>
-      </div>
-    </div>
-    <div class="alert-item">
-      <div class="alert-icon alert-low">📱</div>
-      <div class="alert-content">
-        <div class="alert-title">🟡 Grownsy 今日 LIVE 直播（7/30 2AM）— 待观察</div>
-        <div class="alert-desc">需关注直播内容和促销力度，手动查看 Grownsy TK LIVE 回放。</div>
-      </div>
-    </div>
-    <div class="alert-item">
-      <div class="alert-icon alert-low">🏆</div>
-      <div class="alert-content">
-        <div class="alert-title">🟢 GooGaia + Babylist 双 #1 — 正面声量窗口（7-14天）</div>
-        <div class="alert-desc">最大化利用双权威背书，立即转化为社媒内容和广告素材。</div>
+        <div class="alert-title">🔴 战役关键期 — Phase 2 中段 (8/2) BDBW20 仅剩 5 天</div>
+        <div class="alert-desc">8/2 处于 Phase 2 中段（8/1-7），BDBW20 享 KleanPal Pro 20% OFF 仅剩 5 天。立即发布 3-5 条促销+情感内容，最大化转化。Phase 3 Encore 8/8-11 即将开始。</div>
       </div>
     </div>
     <div class="alert-item">
       <div class="alert-icon alert-medium">⚠️</div>
       <div class="alert-content">
-        <div class="alert-title">🟠 D8 GooGaia 信心分偏低 — 88/100 (#7, Moderate Confidence)</div>
-        <div class="alert-desc">需推动更多长期用户评测投稿，提升 D8 在 GooGaia 的信心分。</div>
+        <div class="alert-title">🟠 Eufy Baby TK 账号疑似停用 — 监控 2-3 天</div>
+        <div class="alert-desc">今日返回"Couldn't find this account"，可能已停用或改名。手动确认 2-3 天；如是永久变动，竞品声量重新评估。</div>
       </div>
     </div>
     <div class="alert-item">
-      <div class="alert-icon alert-low">📦</div>
+      <div class="alert-icon alert-low">🏆</div>
       <div class="alert-content">
-        <div class="alert-title">🟡 Papablic SafeguardPlus 补货延迟 — ship by July 18th</div>
-        <div class="alert-desc">缺货期加大 Momcozy 广告投放，抢夺排队客户。</div>
+        <div class="alert-title">🟢 GooGaia 双榜稳定 — KleanPal Pro #1 (92, High) 红利期</div>
+        <div class="alert-desc">7-14 天内最大化利用 KleanPal Pro #1 红利，结合战役期促销。</div>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon alert-medium">💰</div>
+      <div class="alert-content">
+        <div class="alert-title">🟠 Grownsy 销量登顶 — 2K+/月 + 4.8 星/3,149 评价</div>
+        <div class="alert-desc">在促销期突出 KleanPal Pro 评测 #1 + Babylist Best Overall 对比。</div>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon alert-medium">🆕</div>
+      <div class="alert-content">
+        <div class="alert-title">🟠 Baby Brezza 新品攻势 — AirSwirl + Sterilizer Dryer Mini</div>
+        <div class="alert-desc">关注便携化趋势，评估 Momcozy 便携产品线。</div>
       </div>
     </div>
     <div class="alert-item">
       <div class="alert-icon alert-low">💬</div>
       <div class="alert-content">
-        <div class="alert-title">🟢 Reddit 共识：Momcozy > Baby Brezza — 社区口碑红利</div>
-        <div class="alert-desc">安排品牌代表 authentic 参与 r/Buyingforbaby 讨论（3.4K月访/$24K流量价值）。</div>
+        <div class="alert-title">🟢 Reddit/WhatToExpect 7 月共识 — Momcozy > Brezza</div>
+        <div class="alert-desc">立即制作"3 个真实 Reddit 对比"UGC 内容，结合战役期促销。</div>
+      </div>
+    </div>
+    <div class="alert-item">
+      <div class="alert-icon alert-low">📊</div>
+      <div class="alert-content">
+        <div class="alert-title">🟡 竞品 TK 数据连续失效 — 6 天 + Eufy 账号异常</div>
+        <div class="alert-desc">建议手动保底 + 评估第三方工具（Pentos / TikBuddy / Exolyt）。</div>
       </div>
     </div>
   </div>
 
   <!-- Footer -->
   <div style="text-align: center; padding: 20px; color: #888; font-size: 12px;">
-    <p>Momcozy Feedmates Social Media Daily Report · 2026-07-30 · 第 10 次自动化执行</p>
+    <p>Momcozy Feedmates Social Media Daily Report · 2026-08-02 · 第 11 次自动化执行</p>
     <p style="margin-top: 4px;">数据来源：WebFetch (一手) / WebSearch (二手) · 部署：GitHub Pages · Chart.js 可视化</p>
-    <p style="margin-top: 4px; color: #aaa;">⚠️ 竞品 TikTok 数据连续受限，建议手动补数或对接第三方工具</p>
+    <p style="margin-top: 4px; color: #f5576c; font-weight: 600;">🔥 "母乳喂养月"战役进行中 — BDBW20 8/1-7 / BDBW15 8/8-11</p>
+    <p style="margin-top: 4px; color: #aaa;">⚠️ 竞品 TikTok 数据连续 6 天受限，Eufy Baby 账号疑似停用</p>
   </div>
 
 </div>
@@ -655,10 +690,10 @@ new Chart(document.getElementById('contentTypeChart'), {
     datasets: [{
       label: '平均播放量',
       data: [4200000, 810000, 270000, 2638, 50000],
-      backgroundColor: 'rgba(102,126,234,0.2)',
-      borderColor: '#667eea',
+      backgroundColor: 'rgba(245,87,108,0.2)',
+      borderColor: '#f5576c',
       borderWidth: 2,
-      pointBackgroundColor: '#667eea'
+      pointBackgroundColor: '#f5576c'
     }]
   },
   options: {
@@ -676,7 +711,7 @@ new Chart(document.getElementById('commentChart'), {
     labels: ['品牌认同 35%', '产品咨询 25%', '喂养经验 20%', '竞品对比 10%', '售后物流 10%'],
     datasets: [{
       data: [35, 25, 20, 10, 10],
-      backgroundColor: ['#667eea','#38ef7d','#2193b0','#f5af19','#f12711']
+      backgroundColor: ['#f5576c','#38ef7d','#2193b0','#f5af19','#f12711']
     }]
   },
   options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right' } } }
@@ -686,11 +721,11 @@ new Chart(document.getElementById('commentChart'), {
 new Chart(document.getElementById('keywordChart'), {
   type: 'bar',
   data: {
-    labels: ['Momcozy\nKleanPal Pro', 'Momcozy D8', 'Baby Brezza', 'Eufy S1 Pro', 'bottle washer\nTikTok'],
+    labels: ['Momcozy\nKleanPal Pro', 'Momcozy vs\nBrezza', 'Breathe &\nBreastfeed', 'Brezza\nBottle Washer', 'Grownsy\nEaseClean'],
     datasets: [{
       label: '声量变化 %',
-      data: [35, 15, -5, 0, 50],
-      backgroundColor: ['#38ef7d','#667eea','#ff6b6b','#ffa502','#11998e'],
+      data: [50, 40, 100, -5, 35],
+      backgroundColor: ['#38ef7d','#f5576c','#667eea','#ff6b6b','#11998e'],
       borderRadius: 6
     }]
   },
@@ -698,19 +733,39 @@ new Chart(document.getElementById('keywordChart'), {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: false } },
-    scales: { y: { ticks: { callback: function(v) { return v+'%'; } } } }
+    scales: { y: { ticks: { callback: function(v) { return v + '%'; } } } }
   }
 });
 
-// Chart 5: GooGaia Scores
+// Chart 5: GooGaia Score Comparison
 new Chart(document.getElementById('googaiaChart'), {
   type: 'bar',
   data: {
-    labels: ['Momcozy KleanPal Pro', 'Papablic SafeguardPlus', 'Eufy S1 Pro', 'Grownsy EaseClean', 'Papablic (original)', 'Baby Brezza Pro', 'Momcozy D8'],
+    labels: ['Momcozy\nKleanPal Pro', 'Papablic\nSafeguardPlus', 'Eufy\nS1 Pro', 'Grownsy\nEaseClean Pro', 'Papablic Pro', 'Baby Brezza\nPro', 'Momcozy D8'],
     datasets: [{
-      label: 'GooGaia Score',
+      label: 'GooGaia 评分',
       data: [92, 91, 90, 90, 89, 88, 88],
-      backgroundColor: ['#38ef7d','#667eea','#2193b0','#11998e','#764ba2','#ff6b6b','#f5af19'],
+      backgroundColor: ['#f5576c','#764ba2','#2193b0','#38ef7d','#667eea','#ff6b6b','#f5af19'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: false, min: 80, max: 100, ticks: { callback: function(v) { return v + '/100'; } } } }
+  }
+});
+
+// Chart 6: Price Comparison (USD, 8/2 战役期)
+new Chart(document.getElementById('priceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Grownsy\nEaseClean Pro', 'Momcozy\n(BDBW20)', 'Baby Brezza\nPro', 'Papablic\nSafeguardPlus', 'Eufy\nS1 Pro'],
+    datasets: [{
+      label: '当前价格 (USD)',
+      data: [229.98, 239.99, 239.99, 349.99, 399.99],
+      backgroundColor: ['#38ef7d','#f5576c','#ff6b6b','#f5af19','#764ba2'],
       borderRadius: 6
     }]
   },
@@ -719,25 +774,9 @@ new Chart(document.getElementById('googaiaChart'), {
     responsive: true,
     maintainAspectRatio: false,
     plugins: { legend: { display: false } },
-    scales: { x: { min: 80, max: 100 } }
-  }
-});
-
-// Chart 6: Price Comparison
-new Chart(document.getElementById('priceChart'), {
-  type: 'bar',
-  data: {
-    labels: ['Grownsy EaseClean', 'Baby Brezza Pro', 'Momcozy KleanPal Pro', 'Papablic SafeguardPlus', 'Eufy S1 Pro'],
-    datasets: [
-      { label: '原价', data: [289.99, 299.99, 299.99, 399.99, 429.99], backgroundColor: '#ddd', borderRadius: 4 },
-      { label: '当前价', data: [227.99, 239.99, 299.99, 349.99, 399.99], backgroundColor: '#667eea', borderRadius: 4 }
-    ]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { position: 'top' } },
-    scales: { y: { ticks: { callback: function(v) { return '$'+v; } } } }
+    scales: {
+      x: { ticks: { callback: function(v) { return '$' + v; } } }
+    }
   }
 });
 </script>
